@@ -23,6 +23,9 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 
+from Curs_programare.curs_9.explicit_wait import chrome
+
+
 class Selectors():
     chrome = webdriver.Chrome(ChromeDriverManager().install())
 
@@ -33,8 +36,10 @@ class Selectors():
     INPUT_JOB_TITLE = (By.CLASS_NAME, "form-control")
     RADIO_BUTTON_1 = (By.CSS_SELECTOR, "input#radio-button-1")
     RADIO_BUTTON_2 = (By.CSS_SELECTOR, "input#radio-button-2")
-    RADIO_BUTTON_3 = (By.CSS_SELECTOR, "input@radio-button-3")
-    INPUT_ATRIBUTE = (By.XPATH, "//input[@id='first-name']")
+    RADIO_BUTTON_3 = (By.CSS_SELECTOR, "input#radio-button-3")
+    INPUT_ATRIBUTE_1 = (By.XPATH, "//input[@id='first-name']")
+    INPUT_ATRIBUTE_2 = (By.XPATH, "//input[@id='last-name']")
+    INPUT_ATRIBUTE_3 = (By.XPATH, "//input[@id='job-title']")
 
     def __init__(self):
         self.chrome.get("https://formy-project.herokuapp.com/form")
@@ -81,14 +86,35 @@ class Selectors():
         input.clear()
         input.send_keys(input_value)
 
+    def atribute_valoare(self,first_name, last_name, job_title):
+        self.chrome.get("https://formy-project.herokuapp.com/form")
+        atribute_valoare_1 = self.chrome.find_element(*self.INPUT_ATRIBUTE_1)
+        atribute_valoare_2 = self.chrome.find_element(*self.INPUT_ATRIBUTE_2)
+        atribute_valoare_3 = self.chrome.find_element(*self.INPUT_ATRIBUTE_3)
+        atribute_valoare_1.send_keys(first_name)
+        atribute_valoare_2.send_keys(last_name)
+        atribute_valoare_3.send_keys(job_title)
+
+    def text_element(self):
+        self.chrome.get("https://formy-project.herokuapp.com/form")
+        self.chrome.find_element(By.XPATH,'//a[text()="Submit"]').click()
+
+    def partial_text(self):
+        self.chrome.get("https://formy-project.herokuapp.com/form")
+        full_text = self.chrome.find_element(By.XPATH, '//a[contains(text(), "Sub")]').text
+        print(full_text)
+
 selector = Selectors()
-selector.first_name_field("Laura")
-selector.click_autocomplete()
-selector.click_key()
-selector.last_name_field("Popa")
-selector.job_title("Inginer")
-selector.click_radio_button(2)
-selector.formy_input("Enter first name", "Diana")
+# selector.first_name_field("Laura")
+# selector.click_autocomplete()
+# selector.click_key()
+# selector.last_name_field("Popa")
+# selector.job_title("Inginer")
+# selector.click_radio_button(2)
+# selector.formy_input("Enter first name", "Diana")
+#selector.atribute_valoare("Laura", "Popa", "Engineer")
+#selector.text_element()
+selector.partial_text()
 sleep(5)
 
 '''
@@ -105,5 +131,7 @@ cu (xpath)[1]
 ● 1 funcție ca și cea de la clasă prin care să pot alege eu prin parametru cu
 ce element vreau să interacționez.
 '''
+
+
 
 
